@@ -1,0 +1,29 @@
+name: Deploy to Hostinger
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: root
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            echo "--- Iniciando despliegue en Hostinger ---"
+            cd /etc/easypanel/projects/propify_crm/odoo/volumes/odoo-addons/custom_crm_propify
+            
+            echo "1. Bajando cambios desde GitHub..."
+            git pull origin main
+            
+            echo "2. Ajustando permisos para Odoo (User 101)..."
+            chown -R 101:101 .
+            
+            echo "3. Actualizando módulo en el contenedor de Propify..."
+            docker exec -u 0 propify_crm_odoo.1.mkkne0t91wrnfsq31w1dnwyfz odoo -u custom_crm_propify -d propify_crm --stop-after-init
+            
+            echo "--- ¡Despliegue finalizado con éxito! ---"
