@@ -8,7 +8,7 @@
     'installable': True,
     'assets': {
         'web.assets_backend': [
-            ('prepend', 'crm_custom_fields/static/src/scss/primary_variables.scss'),
+            ('prepend', 'custom_crm_propify/static/src/scss/primary_variables.scss'),
         ],
     },
     'application': True,

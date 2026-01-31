@@ -12,7 +12,7 @@ $o-web-header-color: white;         // Color del texto/íconos en el header
     .o_menu_sections > button, .o_menu_sections > a{
         background-color: $o-brand-primary !important;
 
-        :hover{
+        &:hover{
             background-color: $o-brand-primary_selected !important;
         }
     }
