@@ -1,0 +1,19 @@
+$o-brand-primary: #047d7d;
+$o-brand-primary_selected: #0dcece; 
+
+// Variables para el Header del Backend (Menú superior)
+$o-web-header-bg: $o-brand-primary; // Fondo del header
+$o-web-header-color: white;         // Color del texto/íconos en el header
+
+.o_main_navbar {
+    background-color: $o-brand-primary !important;
+    --o-navbar-height : 60px !important; 
+
+    .o_menu_sections > button, .o_menu_sections > a{
+        background-color: $o-brand-primary !important;
+
+        :hover{
+            background-color: $o-brand-primary_selected !important;
+        }
+    }
+}
