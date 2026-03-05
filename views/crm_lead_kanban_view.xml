@@ -1,0 +1,81 @@
+<odoo>
+    <record id="crm_custom_fields_crm_lead_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.inherit.add.fields</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+
+            <!-- Ocultar el monto esperado (sum_field) de la barra de progreso -->
+            <xpath expr="//progressbar" position="attributes">
+                <attribute name="sum_field"></attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='priority']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='activity_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//div[@class='o_kanban_card_crm_lead_revenue']" position="before">
+                <div class="d-flex mb-2 cabecera_card">
+                    <field name="canal" invisible="1"/>
+                    <span class="contenedor_icono_canal_18">
+                        <field name="canal_icon_html" 
+                            widget="html" 
+                            invisible="not canal"
+                            nolabel="1"
+                            class="d-inline-block align-middle me-2"
+                        />
+                    </span>
+                    <div class="f_name">
+                        <field class="fw-bold fs-5 pe-1" name="name" style="line-height: 1.1;"/>
+                    </div>
+                    <div class="texto_fecha_horas_tarjeta text-muted">
+                        <div class="tarjeta_fecha_dia_mes">
+                            <field name="create_date"/>
+                        </div>
+                    </div>
+                </div>
+                <field name="phone" class="h4"/>
+                <div class="d-flex justify-content-between">
+                    <div class="cont_carrera_ciclo mb-0 me-2">
+                        <field name="tipo"/>
+                        <field name="ubicacion"/>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="contenedor_autor d-flex align-items-center">
+                        <field name="ultimo_autor_tipo" invisible="1"/>
+                        <div class="cuadro_usuario">
+                            <field name="ultimo_autor_icon_html" widget="html" invisible="not ultimo_autor_tipo"/>
+                        </div>
+                        <div class="texto_fecha_horas_tarjeta text-muted ms-2">
+                            <field name="ultima_fecha_mensaje"/>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <!--<field name="es_activo_propify_bot" widget="boolean_toggle" class="me-1 mi-toggle-personalizado-tarjeta"/>-->
+                        <div class="texto_fecha_horas_tarjeta text-muted">
+                        </div>
+                        <field name="user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]" class="ms-2"/>
+                    </div>
+                </div>
+            </xpath>
+
+
+
+        </field>
+    </record>
+</odoo>

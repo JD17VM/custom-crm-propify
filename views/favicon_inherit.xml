@@ -1,0 +1,21 @@
+<odoo>
+    <template id="custom_favicon_frontend" inherit_id="web.layout" name="Custom Frontend Favicon">
+        <xpath expr="//link[@rel='shortcut icon']" position="replace">
+            <link 
+                rel="shortcut icon" 
+                type="image/x-icon" 
+                href="/custom_crm_propify/static/src/img/favicon.ico"
+            />
+        </xpath>
+    </template>
+
+    <template id="custom_favicon_backend" inherit_id="web.layout" name="Custom Backend Favicon"> 
+        <xpath expr="//link[@rel='shortcut icon']" position="replace">
+            <link 
+                rel="shortcut icon" 
+                type="image/x-icon" 
+                href="/custom_crm_propify/static/src/img/favicon.ico"
+            />
+        </xpath>
+    </template>
+</odoo>

@@ -5,8 +5,308 @@
         <field name="inherit_id" ref="crm.crm_lead_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='tag_ids']" position="after">
-                <field name="metodo_contacto"/>
+                <field name="metodo_contacto" invisible="1"/>
             </xpath>
         </field>
     </record>
+
+    <!-- Acción de Servidor Segura para Refrescar -->
+    <record id="action_reload_crm_view_safe" model="ir.actions.server">
+        <field name="name">Refrescar Pantalla</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">
+action = {
+    'type': 'ir.actions.client',
+    'tag': 'reload',
+}
+        </field>
+    </record>
+
+    <menuitem id="menu_crm_refresh_button_safe"
+              name="🔄 Refrescar"
+              parent="crm.crm_menu_root"
+              action="action_reload_crm_view_safe"
+              sequence="100"/>
+
+    <!-- ============================================================
+         HERRAMIENTA DE MIGRACIÓN SEGURA (PRINCIPAL -> COMPRADORES)
+    ============================================================ -->
+    <record id="action_migrar_principal_compradores" model="ir.actions.server">
+        <field name="name">⚠️ Ejecutar Migración: Principal -> Compradores</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">
+model.action_tool_migrate_principal_to_compradores()
+        </field>
+    </record>
+
+    <menuitem id="menu_crm_migration_tool"
+              name="⚠️ Migrar a Compradores"
+              parent="crm.crm_menu_root"
+              action="action_migrar_principal_compradores"
+              sequence="99"
+              groups="base.group_system"/>
+
+    <!-- ============================================================
+         PIPELINE PRINCIPAL
+    ============================================================ -->
+    <record id="action_pipeline_principal" model="ir.actions.server">
+        <field name="name">⭐ Pipeline Principal</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">
+team = env['crm.team'].search(['|', ('name', '=', 'Principal (Recepción)'), ('name', '=', 'Ventas')], limit=1)
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Pipeline Principal',
+    'res_model': 'crm.lead',
+    'view_mode': 'kanban,list,form,graph,pivot,activity',
+    'domain': [('team_id', '=', team.id)],
+    'context': {
+        'default_team_id': team.id,
+        'search_default_team_id': team.id,
+        'default_type': 'opportunity',
+        'search_default_my_pipeline': 1,
+    },
+}
+        </field>
+    </record>
+
+    <!-- ============================================================
+         PIPELINE COMPRADORES - ir.actions.server para resolver team ID en runtime
+    ============================================================ -->
+    <record id="action_pipeline_compradores_v2" model="ir.actions.server">
+        <field name="name">👤 Pipeline Compradores</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">
+team = env.ref('custom_crm_propify.crm_team_propify_owners')
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Pipeline Compradores',
+    'res_model': 'crm.lead',
+    'view_mode': 'kanban,list,form,graph,pivot,activity',
+    'domain': [('team_id', '=', team.id)],
+    'context': {
+        'default_team_id': team.id,
+        'search_default_team_id': team.id,
+        'default_type': 'opportunity',
+        'search_default_my_pipeline': 1,
+    },
+}
+        </field>
+    </record>
+
+    <!-- ============================================================
+         PIPELINE PROPIETARIOS
+    ============================================================ -->
+    <record id="action_pipeline_propietarios_v2" model="ir.actions.server">
+        <field name="name">🏠 Pipeline Propietarios</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">
+team = env.ref('custom_crm_propify.crm_team_propify_custom')
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Pipeline Propietarios',
+    'res_model': 'crm.lead',
+    'view_mode': 'kanban,list,form,graph,pivot,activity',
+    'domain': [('team_id', '=', team.id)],
+    'context': {
+        'default_team_id': team.id,
+        'search_default_team_id': team.id,
+        'default_type': 'opportunity',
+        'search_default_my_pipeline': 1,
+    },
+}
+        </field>
+    </record>
+
+    <!-- Menú Padre para Pipelines -->
+    <menuitem id="menu_pipeline_root"
+              name="🔀 Pipelines"
+              parent="crm.crm_menu_root"
+              sequence="1"/>
+
+    <menuitem id="menu_pipeline_principal"
+              name="⭐ Principal"
+              parent="menu_pipeline_root"
+              action="action_pipeline_principal"
+              sequence="1"/>
+
+    <menuitem id="menu_pipeline_compradores"
+              name="👤 Compradores"
+              parent="menu_pipeline_root"
+              action="action_pipeline_compradores_v2"
+              sequence="2"/>
+
+    <menuitem id="menu_pipeline_propietarios"
+              name="🏠 Propietarios"
+              parent="menu_pipeline_root"
+              action="action_pipeline_propietarios_v2"
+              sequence="3"/>
+
+    <!-- ============================================================
+         MENU PROPIEDADES (PERSONALIZADO)
+    ============================================================ -->
+    
+    <!-- PERMISOS DE ACCESO (Necesario para que el menú sea visible) -->
+    <record id="access_crm_property_internal" model="ir.model.access">
+        <field name="name">crm.property.internal</field>
+        <field name="model_id" ref="model_crm_property"/>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <!-- Vista Lista -->
+    <record id="view_crm_property_tree" model="ir.ui.view">
+        <field name="name">crm.property.tree</field>
+        <field name="model">crm.property</field>
+        <field name="arch" type="xml">
+            <list string="Propiedades">
+                <field name="name"/>
+                <field name="mensaje_captacion"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="view_crm_property_form" model="ir.ui.view">
+        <field name="name">crm.property.form</field>
+        <field name="model">crm.property</field>
+        <field name="arch" type="xml">
+            <form string="Propiedad">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder="Ej. Casa en X "/></h1>
+                    </div>
+                    <group>
+                        <field name="mensaje_captacion" placeholder="Ej: Hola, estoy interesado en la casa en X"/>
+                        <field name="description" placeholder="Detalles de la propiedad..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_crm_propiedades" model="ir.actions.act_window">
+        <field name="name">Propiedades</field>
+        <field name="res_model">crm.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Registra aquí tus Propiedades y sus mensajes de captación.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_crm_propiedades"
+              name="🏢 Propiedades"
+              parent="crm.crm_menu_root"
+              action="action_crm_propiedades"
+              sequence="5"/>
+
+    <!-- ============================================================
+         VISTA DEL FORMULARIO DE EQUIPO
+    ============================================================ -->
+    <record id="crm_team_view_form_inherit_direct_link" model="ir.ui.view">
+        <field name="name">crm.team.form.inherit.direct.link</field>
+        <field name="model">crm.team</field>
+        <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="%(action_pipeline_principal)d"
+                            type="action"
+                            string="⭐ Ir a Pipeline Principal"
+                            class="oe_highlight"/>
+                    <button name="%(action_pipeline_compradores_v2)d"
+                            type="action"
+                            string="👤 Ir a Pipeline Compradores"
+                            class="oe_highlight"/>
+                    <button name="%(action_pipeline_propietarios_v2)d"
+                            type="action"
+                            string="🏠 Ir a Pipeline Propietarios"
+                            class="oe_highlight"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- 1. Ocultar el menú estándar "Mi Pipeline" para evitar confusiones -->
+    <record id="crm.menu_crm_opportunities" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
+    <!-- 2. Forzar que el icono principal del CRM abra el Pipeline Principal -->
+    <record id="crm.crm_menu_root" model="ir.ui.menu">
+        <field name="action" ref="action_pipeline_principal"/>
+    </record>
+
+    <!-- ============================================================
+         VISTA DE CONFIGURACIÓN DE PROMPTS (IA)
+    ============================================================ -->
+    <record id="view_crm_ai_config_tree" model="ir.ui.view">
+        <field name="name">crm.ai.config.tree</field>
+        <field name="model">crm.ai.config</field>
+        <field name="arch" type="xml">
+            <list string="Configuraciones de IA" create="1" delete="1">
+                <field name="name"/>
+                <field name="tipo" widget="badge" decoration-info="tipo == 'principal'" decoration-success="tipo == 'venta'" decoration-warning="tipo == 'compra'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_crm_ai_config_form" model="ir.ui.view">
+        <field name="name">crm.ai.config.form</field>
+        <field name="model">crm.ai.config</field>
+        <field name="arch" type="xml">
+            <form string="Configuración de IA">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tipo" widget="radio" options="{'horizontal': true}" string="TIPO DE FLUJO (Seleccionar aquí)"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Instrucciones del Prompt">
+                            <group><field name="tipo" string="Tipo de Flujo (Verificación)"/></group>
+                            <field name="prompt_principal" placeholder="Escribe aquí las instrucciones detalladas para la IA en este flujo..." style="height: 400px;"/>
+                        </page>
+                        <page string="Respuestas y Cierre">
+                            <group>
+                                <field name="respuestas_recomendadas"/>
+                                <field name="instrucciones_finales"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_crm_ai_config" model="ir.actions.act_window">
+        <field name="name">Configuración IA (Prompts)</field>
+        <field name="res_model">crm.ai.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_crm_ai_config_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_crm_ai_config_form')})]"/>
+    </record>
+
+    <menuitem id="menu_crm_ai_config"
+              name="🤖 Prompts y Configuración IA"
+              parent="crm.crm_menu_config"
+              action="action_crm_ai_config"
+              sequence="10"/>
+
 </odoo>

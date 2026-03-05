@@ -17,3 +17,75 @@ $o-web-header-color: white;         // Color del texto/íconos en el header
         }
     }
 }
+
+$ancho_logo: 180px;
+
+.custom-app-banner{
+    background-color: $o-brand-primary;
+    display: flex;
+
+    .contenedor_logos{
+        display:flex;
+        column-gap:8px;
+        padding: 10px 5px 10px 10px;
+        position: absolute;
+        //padding-top: 10px ;
+        //background-color: red;
+        //width: 400px;
+        width: 400px;
+        height: 60px;
+        .contenedor_logo_texto_autonoma{
+            height: 100%;
+            //background-color:red;
+            width: $ancho_logo;
+
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                object-position: center;
+            }
+        }
+        .division_linea{
+            background-color: white;
+            width:3px;
+        }
+        .contenedor_logo_empresa_cliente{
+            //background-color: green;
+            height: 100%;
+            width: 49%;
+
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                object-position: center;
+            }
+        }
+
+        a{
+            display: flex;
+            justify-content: center;
+            column-gap: 5px;
+            align-items: center;
+            width: 250px;
+        } 
+    }
+}
+
+.custom-app-banner ~ header.o_navbar {
+    background: red;
+
+    .o_navbar_apps_menu{
+        margin-left: $ancho_logo;
+    }
+}
+
+
+@media (max-width: 767px) {
+  .custom-app-banner{
+    .contenedor_logos{
+        margin-left: 36px;
+    }
+}
+}

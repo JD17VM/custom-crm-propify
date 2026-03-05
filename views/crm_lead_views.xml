@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_inherit_chatwoot" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.inherit.chatwoot</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Botones en el Header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_open_chatwoot_conversation" 
+                        string="💬 Abrir Chat" 
+                        type="object" 
+                        class="oe_highlight" 
+                        invisible="id_conversacion == 0"/>
+                
+                <button name="diagnostico_completo_lead" 
+                        string="🔍 Diagnóstico" 
+                        type="object" 
+                        groups="sales_team.group_sale_manager"/>
+
+                <button name="action_list_chatwoot_agents" 
+                        string="👥 Ver Agentes" 
+                        type="object" 
+                        groups="sales_team.group_sale_manager"/>
+                        
+                <button name="test_manual_sync" 
+                        string="🔄 Sync Manual" 
+                        type="object" 
+                        groups="base.group_no_one"/>
+
+                <!-- BOTONES DE MOVIMIENTO DE PIPELINE -->
+                <button name="action_move_to_compradores" 
+                        string="🏠 Mover a Compradores" 
+                        type="object" 
+                        class="oe_highlight"/>
+                        
+                <button name="action_move_to_propietarios" 
+                        string="👤 Mover a Propietarios" 
+                        type="object" 
+                        class="oe_highlight"/>
+            </xpath>
+
+            <!-- Mostrar ID Conversación (Solo lectura) -->
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="id_conversacion" readonly="1" groups="base.group_no_one"/>
+                <!-- <field name="canal_icon_html" widget="html" readonly="1"/> -->
+            </xpath>
+        </field>
+    </record>
+</odoo>

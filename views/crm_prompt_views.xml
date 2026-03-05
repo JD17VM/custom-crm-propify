@@ -1,0 +1,78 @@
+<odoo>
+    <!-- Vista de Lista (Tree) -->
+    <record id="view_crm_prompt_tree" model="ir.ui.view">
+        <field name="name">crm.prompt.tree</field>
+        <field name="model">crm.prompt</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="contenido"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista de Formulario -->
+    <record id="view_crm_prompt_form" model="ir.ui.view">
+        <field name="name">crm.prompt.form</field>
+        <field name="model">crm.prompt</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="contenido"/>
+                        <field name="active" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- VISTA PARA LA CONFIGURACIÓN GLOBAL (Prompt Único) -->
+    <record id="view_crm_ai_config_form" model="ir.ui.view">
+        <field name="name">crm.ai.config.form</field>
+        <field name="model">crm.ai.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <notebook>
+                        <page string="Prompt Principal">
+                            <field name="prompt_principal" placeholder="Escribe aquí el prompt maestro..." widget="text" style="min-height: 500px; font-size: 14px; font-family: monospace;"/>
+                        </page>
+                        <page string="Respuestas Recomendadas">
+                            <field name="respuestas_recomendadas" placeholder="Escribe aquí las respuestas recomendadas..." widget="text" style="min-height: 500px; font-size: 14px; font-family: monospace;"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acciones y Menús -->
+    <record id="action_crm_prompt" model="ir.actions.act_window">
+        <field name="name">Piezas de Conocimiento</field>
+        <field name="res_model">crm.prompt</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_crm_ai_config" model="ir.actions.act_window">
+        <field name="name">Configuración Prompt IA</field>
+        <field name="res_model">crm.ai.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_crm_prompt"
+              name="Piezas de Conocimiento"
+              parent="crm.crm_menu_root"
+              action="action_crm_prompt"
+              sequence="20"/>
+
+    <menuitem id="menu_crm_ai_config"
+              name="Configuración IA"
+              parent="crm.crm_menu_root"
+              action="action_crm_ai_config"
+              sequence="21"/>
+</odoo>

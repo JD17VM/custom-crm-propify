@@ -1,0 +1,157 @@
+/* crm_custom_fields/static/src/css/style.css */
+
+/* --- CAMBIO DE FUENTE GLOBAL --- */
+
+/* 2. Aplicamos la fuente a todo el cuerpo con !important para sobrescribir Bootstrap/Odoo */
+body {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+/* Estilo para el interruptor más grande */
+.mi-toggle-personalizado .o-checkbox {
+    transform: scale(2); /* Aumenta el tamaño al 150% */
+}
+
+/* Puedes forzar el color cuando está activo (cambiando el color de fondo) */
+.mi-toggle-personalizado input:checked {
+    background-color: #ff0000 !important; /* Rojo */
+    border-color: #ff0000 !important;
+}
+
+.mi-toggle-personalizado-tarjeta input:checked {
+    background-color: #ff0000 !important; /* Rojo */
+    border-color: #ff0000 !important;
+}
+
+.mi-toggle-personalizado-tarjeta .o-checkbox {
+    margin-bottom: 0;
+}
+
+
+
+.contenedor_icono_canal_24 img{
+    width: 24px !important; 
+    height: 24px !important; 
+    vertical-align: middle;
+}
+
+.contenedor_icono_canal_18 img{
+    width: 18px !important; 
+    height: 18px !important; 
+    vertical-align: middle;
+}
+
+
+.cont_carrera_ciclo{
+    line-height: 1.3;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+/* ------ */
+
+/* Ocultar el ícono de chat/mensajería del systray */
+.o-mail-DiscussSystray-class {
+    display: none !important;
+}
+
+/* Alternativa por si cambia la clase */
+.o-mail-MessagingMenu {
+    display: none !important;
+}
+
+/* Ocultar también el contador de mensajes */
+.o-mail-MessagingMenu-counter {
+    display: none !important;
+}
+
+
+/* -------------------------- */
+
+/* Ocultar el ícono de Actividades (reloj) - Varias opciones */
+.o-mail-ActivityMenu {
+    display: none !important;
+}
+
+/* Por el ícono específico */
+i.fa-clock-o {
+    display: none !important;
+}
+
+/* Por el botón que contiene el reloj en el systray */
+.o_menu_systray button i.fa-clock-o {
+    display: none !important;
+}
+
+/* Ocultar el botón completo del reloj */
+.o_menu_systray .o-mail-ActivityMenu,
+.o_menu_systray button:has(i.fa-clock-o) {
+    display: none !important;
+}
+
+/* Ocultar botón específico de "Actividades" dentro del Chatter (junto a Enviar mensaje) */
+.o-mail-Chatter-activity {
+    display: none !important;
+}
+
+/* Ocultar botón "Enviar mensaje" en el Chatter */
+.o-mail-Chatter-sendMessage {
+    display: none !important;
+}
+
+/* -------------------------- */
+
+
+/* Ocultar botón de vista Calendario en CRM */
+.o_cp_switch_buttons button.o_calendar {
+    display: none !important;
+}
+
+/* Ocultar botón de vista Tabla dinámica en CRM */
+.o_cp_switch_buttons button.o_pivot {
+    display: none !important;
+}
+
+
+
+/* --------------------------------- */
+
+/* NUEVO: Ocultar botón de vista Lista en CRM */
+.o_cp_switch_buttons button.o_list {
+    /* display: none !important; */
+    /* display: none !important; */
+    /* display: none !important; */
+}
+
+/* Opcional: Si también quieres ocultar el botón de Gráfico que aparece en tu HTML */
+.o_cp_switch_buttons button.o_graph {
+    display: none !important;
+}
+
+
+
+/* --------------------------------------------------------- */
+/* LIMPIEZA DEL MENÚ DE USUARIO (PERFIL SUPERIOR DERECHO)    */
+/* --------------------------------------------------------- */
+
+/* Ocultar "Mi cuenta de Odoo.com" */
+[data-menu="account"] {
+    display: none !important;
+}
+
+/* OPCIONAL: Ocultar "Ayuda" / "Soporte" (Si tampoco lo quieres) */
+[data-menu="support"] {
+    display: none !important;
+}
+
+/* OPCIONAL: Ocultar "Atajos / Shortcuts" (CTRL+K) */
+[data-menu="shortcuts"] {
+    display: none !important;
+}
+
+/* OPCIONAL: Ocultar "Documentación" (si aparece) */
+[data-menu="documentation"] {
+    display: none !important;
+}

@@ -1,0 +1,103 @@
+/* Fondo general de la página */
+body {
+    background-color: white !important;
+    background-image: none !important;
+    overflow-x: hidden; /* Evitar scroll horizontal */
+}
+
+/* 1. ROMPER EL CONTENEDOR PRINCIPAL DE ODOO */
+.container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100vh; /* Altura completa */
+}
+
+/* 2. CONVERTIR LA TARJETA EN LA COLUMNA IZQUIERDA */
+.o_database_list {
+    background-color: white !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    
+    /* Posicionamiento */
+    width: 50% !important;
+    max-width: 50% !important;
+    min-height: 100vh !important;
+    margin: 0 0 0 50% !important;
+    
+    /* Centrar contenido verticalmente */
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem !important; /* Espacio interno generoso */
+    
+    position: relative;
+    z-index: 2; /* Encima de la imagen si se solapan */
+}
+
+/* Botón de "Iniciar Sesión" */
+.btn-primary {
+    background-color: #047d7d !important; /* Tu color corporativo */
+    border-color: #047d7d !important;
+    width: 100%;
+    padding: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 6px !important;
+}
+
+.btn-primary:hover {
+    background-color: #036666 !important;
+}
+
+/* Inputs (Usuario y Contraseña) */
+.form-control {
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #fafafa;
+    border: 1px solid #eee;
+}
+
+/* Ocultar enlaces de gestión, Powered by Odoo y Llave de acceso (Passkey) */
+a[href*="/web/database/manager"], 
+a[href*="odoo.com"],
+.o_auth_passkey_link {
+    display: none !important;
+}
+
+/* Ocultar el logo de la empresa/Odoo en el login */
+.o_database_list img[alt="Logo"] {
+    display: none !important;
+}
+
+/* 3. LA IMAGEN DE LA DERECHA */
+.propify-split-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 1;
+    
+    /* --- CONFIGURA TU IMAGEN AQUÍ --- */
+    background: linear-gradient(135deg, #047d7d 0%, #024c4c 100%); /* Color por defecto */
+    background-image: url('/custom_crm_propify/static/src/img/propify_pared.png'); 
+    
+    background-size: cover;
+    background-position: center;
+}
+
+/* 4. RESPONSIVE (Móvil) */
+@media (max-width: 992px) {
+    .o_database_list {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+    .propify-split-bg {
+        display: none; /* Ocultar imagen en móviles */
+    }
+}

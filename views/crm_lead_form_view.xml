@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="crm_custom_fields_crm_lead_view_form_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.form.inherit.add.fields</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <!-- Mostrar el ícono antes del título -->
+                <xpath expr="//h1[@class='flex-grow-1']" position="before">
+                    <span class="contenedor_icono_canal_24">
+                        <field name="canal_icon_html" 
+                                widget="html" 
+                                invisible="not canal"
+                                nolabel="1"
+                                class="d-inline-block align-middle me-2 mb-2"
+                        />
+                    </span>
+                </xpath>
+                
+                <!-- También puedes agregar el campo canal visible en el formulario -->
+                <xpath expr="//h1[@class='flex-grow-1']/.." position="before">
+                    <div class="d-flex justify-content-between fs-6 text-muted"> 
+                        <div>Canal: <field name="canal" readonly="1"/></div>
+                        <div>
+                            Entrada: <field name="create_date" readonly="1"/>
+                        </div>
+                        <div>
+                            <span class="text-muted small">
+                                <i class="fa fa-user me-1"/> <field name="ultimo_autor_mensaje" groups="base.group_system" nolabel="1" class="d-inline fw-bold"/>
+                            </span>
+                            <span class="text-muted small ms-2">
+                                <i class="fa fa-clock-o me-1"/> <field name="ultima_fecha_mensaje" groups="base.group_system" nolabel="1" class="d-inline" options="{'datepicker': {'step': 1}}"/>
+                            </span>
+                            <span class="text-muted small ms-2">
+                                <field name="ultimo_autor_tipo" groups="base.group_system" nolabel="1" class="d-inline"/>
+                            </span>
+                            
+                            <field name="es_activo_propify_bot" widget="toggle" class="ms-3 mi-toggle-personalizado" invisible="1"/> 
+                        </div>
+                    </div>
+                </xpath> 
+
+                <!-- OCULTAR partner_id del grupo lead_partner -->
+                <xpath expr="//group[@name='lead_partner']//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- OCULTAR partner_id del grupo opportunity_partner -->
+                <xpath expr="//group[@name='opportunity_partner']//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//sheet/group[1]" position="after">
+                    <separator string="Detalles de Operación"/>
+                    <group>
+                        <group>
+                            <field name="tipo" widget="radio" options="{'horizontal': true}"/>
+                            <field name="ubicacion"/>
+                        </group>
+                        <group>
+                            <field name="requerimientos"/>
+                        </group>
+                    </group>
+                    
+
+
+                    <!-- Botones de Diagnóstico (Solo para Administradores del Sistema) -->
+                    <button name="diagnostico_completo_lead" 
+                            string="🔍 Diagnosticar" 
+                            type="object" 
+                            class="btn-warning"
+                            groups="base.group_system"
+                            help="Ejecuta un chequeo completo de la configuración de este lead con Chatwoot."/>
+
+                    <button name="action_list_chatwoot_agents" 
+                            string="👥 Ver Agentes Chatwoot" 
+                            type="object" 
+                            class="btn-info"
+                            groups="base.group_system"
+                            help="Muestra la lista de agentes de Chatwoot y si coinciden con usuarios de Odoo."/>
+
+                    <button name="action_fix_lead_entrante_stage" 
+                            string="🔧 Lead Entrante -> Principal" 
+                            type="object" 
+                            class="btn-secondary"
+                            groups="base.group_system"
+                            help="Asigna la etapa 'Lead Entrante' solo al equipo Principal para evitar duplicados."/>
+
+                    <button name="action_diagnose_ai_config" 
+                            string="🧪 Diagnosticar IA" 
+                            type="object" 
+                            class="btn-info"
+                            groups="base.group_system"
+                            help="Verifica si los prompts de Venta/Compra están configurados correctamente en la base de datos."/>
+
+                    <button name="action_fix_ai_config_duplicates" 
+                            string="🛠️ Reparar Config IA" 
+                            type="object" 
+                            class="btn-warning"
+                            groups="base.group_system"
+                            help="Elimina duplicados y crea las configuraciones de Venta/Compra que faltan."/>
+
+                    <button name="action_emergency_fix_pipelines" 
+                            string="🚑 REPARAR ESTRUCTURA (PROPIETARIOS &lt;-&gt; COMPRADORES)" 
+                            type="object" 
+                            class="btn-danger"
+                            groups="base.group_system"
+                            help="Renombra equipos cruzados y mueve leads según su tipo (Compra/Venta)."/>
+                    <field name="id_conversacion" invisible="1"/>
+                </xpath>
+                
+                <xpath expr="//label[@for='date_deadline']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='date_deadline']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='priority']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='tag_ids']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='team_id']" position="after">
+                    <!-- <field name="can_edit_owner" invisible="1"/> -->
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <!-- <attribute name="readonly">can_edit_owner == False</attribute> -->
+                </xpath>
+
+                <!-- OCULTAR ELEMENTOS SOLICITADOS -->
+                <!-- 1. Botón de Reuniones -->
+                <xpath expr="//button[@name='action_schedule_meeting']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- 2. Ingreso Esperado y Probabilidad -->
+                <xpath expr="//label[@for='expected_revenue']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!-- Ocultar el campo de Ingreso Esperado -->
+                <xpath expr="//field[@name='expected_revenue']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!-- Ocultar el contenedor inmediato del Ingreso (suele contener el texto 'en') -->
+                <xpath expr="//field[@name='expected_revenue']/.." position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!-- Ocultar el bloque completo de Probabilidad (Label, Icono AI, Input, %) -->
+                <!-- Usamos /../.. para subir al div 'col-auto' que agrupa todo lo que mencionaste -->
+                <xpath expr="//field[@name='probability']/../.." position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- Ocultar pestaña Contactos (name='lead') -->
+                <xpath expr="//page[@name='lead']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Vista extendida para Etapas (crm.stage) - Configuración IA -->
+        <record id="view_crm_stage_form_inherit_ai" model="ir.ui.view">
+            <field name="name">crm.stage.form.inherit.ai</field>
+            <field name="model">crm.stage</field>
+            <field name="inherit_id" ref="crm.crm_stage_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="after">
+                    <group string="Configuración IA">
+                        <field name="instrucciones_ia" placeholder="Escribe aquí las instrucciones específicas para la IA en esta etapa..."/>
+                    </group>
+                </xpath>
+
+                <!-- Ocultar campo de Requisitos -->
+                <xpath expr="//field[@name='requirements']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- 1. Vista Lista (Tree) para ver las instrucciones directamente en el listado -->
+        <record id="view_crm_stage_tree_inherit_ai" model="ir.ui.view">
+            <field name="name">crm.stage.tree.inherit.ai</field>
+            <field name="model">crm.stage</field>
+            <field name="inherit_id" ref="crm.crm_stage_tree"/>
+            <field name="arch" type="xml">
+                <!-- Usamos xpath expr="." para referirnos al nodo raíz (tree) de forma segura -->
+                <xpath expr="." position="attributes">
+                    <attribute name="editable">bottom</attribute>
+                    <attribute name="create">0</attribute>
+                    <attribute name="delete">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="instrucciones_ia" optional="show" string="Instrucciones IA" readonly="name == 'Nuevo'"/>
+                    <field name="team_ids" widget="many2many_tags" optional="show" groups="base.group_system"/>
+                </xpath>
+                <xpath expr="//field[@name='is_won']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='rotting_threshold_days']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='color']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- 2. Vista de Búsqueda para filtrar Etapas por Equipo -->
+        <record id="view_crm_stage_search_inherit_ai" model="ir.ui.view">
+            <field name="name">crm.stage.search.inherit.ai</field>
+            <field name="model">crm.stage</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Etapas">
+                    <field name="name"/>
+                    <field name="team_ids" string="Equipo de Ventas"/>
+                    <separator/>
+                    <filter string="Equipo: Principal" name="team_principal" domain="['|', ('team_ids.name', 'ilike', 'Principal'), ('team_ids.name', 'ilike', 'Ventas')]"/>
+                    <filter string="Equipo: Propietarios" name="team_owners" domain="[('team_ids.name', 'ilike', 'Propietarios')]"/>
+                    <filter string="Equipo: Compradores" name="team_buyers" domain="[('team_ids.name', 'ilike', 'Compradores')]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- 3. Acciones separadas para cada equipo -->
+        <record id="action_crm_stage_config_ai" model="ir.actions.act_window">
+            <field name="name">Etapas: Principal</field>
+            <field name="res_model">crm.stage</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_crm_stage_search_inherit_ai"/>
+            <field name="context">{'search_default_team_principal': 1}</field>
+        </record>
+
+        <record id="action_crm_stage_config_ai_owners" model="ir.actions.act_window">
+            <field name="name">Etapas: Propietarios</field>
+            <field name="res_model">crm.stage</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_crm_stage_search_inherit_ai"/>
+            <field name="context">{'search_default_team_owners': 1}</field>
+        </record>
+
+        <record id="action_crm_stage_config_ai_buyers" model="ir.actions.act_window">
+            <field name="name">Etapas: Compradores</field>
+            <field name="res_model">crm.stage</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_crm_stage_search_inherit_ai"/>
+            <field name="context">{'search_default_team_buyers': 1}</field>
+        </record>
+
+        <!-- 4. Menús Desplegables -->
+        <menuitem id="menu_crm_config_stages_ai"
+                  name="Instrucciones Etapas"
+                  parent="crm.crm_menu_root"
+                  sequence="50"/>
+
+        <menuitem id="menu_crm_config_stages_ai_principal" name="⭐ Principal" parent="menu_crm_config_stages_ai" action="action_crm_stage_config_ai" sequence="1"/>
+        <menuitem id="menu_crm_config_stages_ai_owners" name="🏠 Propietarios" parent="menu_crm_config_stages_ai" action="action_crm_stage_config_ai_owners" sequence="2"/>
+        <menuitem id="menu_crm_config_stages_ai_buyers" name="👤 Compradores" parent="menu_crm_config_stages_ai" action="action_crm_stage_config_ai_buyers" sequence="3"/>
+    </data>
+</odoo> 

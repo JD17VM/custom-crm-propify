@@ -1,0 +1,21 @@
+<odoo>
+    <!-- Modificar el formulario de Login -->
+    <template id="custom_login_propify" inherit_id="web.login" name="Login Personalizado Propify">
+        
+        <!-- Agregar mensaje de bienvenida arriba del formulario -->
+        <xpath expr="//form" position="before">
+            <script type="text/javascript">
+                document.title = "Propify CRM";
+            </script>
+            <div class="text-center mb-4">
+                <img src="/custom_crm_propify/static/src/img/Propify_Logo.png" alt="Logo Propify" style="max-height: 150px; margin-bottom: 15px; padding: 10px; border-radius: 8px;"/>
+                <p class="text-muted small">Ingresa tus credenciales para continuar</p>
+            </div>
+        </xpath>
+
+        <!-- Agregar el contenedor para la imagen de la derecha -->
+        <xpath expr="//form" position="after">
+            <div class="propify-split-bg"></div>
+        </xpath>
+    </template>
+</odoo>

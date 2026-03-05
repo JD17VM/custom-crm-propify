@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="mail.menu_root_discuss" active="False"/>
+
+        <menuitem id="contacts.menu_contacts"
+                  active="False"/>
+
+        <menuitem id="calendar.mail_menu_calendar"
+                  active="False"/>
+
+        <menuitem id="crm.crm_menu_config"
+                  active="False"/>
+
+        <menuitem id="utm.menu_link_tracker_root"
+                  active="False"/>
+
+        <menuitem id="base.menu_management" groups="base.group_system"/>
+
+        <menuitem id="crm.crm_menu_report" active="False"/>
+
+
+
+        <menuitem id="crm.crm_lead_menu_my_activities" active="False"/>
+
+        <menuitem id="crm.res_partner_menu_customer" active="False"/>
+
+        <menuitem id="crm.crm_team_menu_kanban" active="False"/>
+        
+        <menuitem id="crm.sales_team_menu_team_pipeline" active="False"/>
+        
+        <menuitem id="sales_team.menu_sales_team_act" active="False"/>
+        <menuitem id="sales_team.menu_sales_team_config" active="False"/>
+    </data>
+</odoo>

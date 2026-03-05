@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="group_crm_coordinator" model="res.groups">
+            <field name="name">Coordinador CRM (Jefe de Equipo)</field>
+            <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman_all_leads'))]"/>
+            <field name="comment">Acceso a todos los leads y gestión básica, sin acceso a configuraciones críticas.</field>
+        </record>
+
+        <record id="group_crm_agent" model="res.groups">
+            <field name="name">Agente de Ventas (Propify)</field>
+            <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="comment">Vendedor estándar: Solo puede ver, editar y gestionar sus propios leads asignados.</field>
+        </record>
+
+        <!-- Permisos para el nuevo modelo de Configuración IA -->
+        <record id="access_crm_ai_config_admin" model="ir.model.access">
+            <field name="name">crm.ai.config.access.admin</field>
+            <field name="model_id" ref="model_crm_ai_config"/>
+            <field name="group_id" ref="base.group_system"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+        </record>
+
+        <!-- Permisos para el Coordinador CRM en Configuración IA -->
+        <record id="access_crm_ai_config_coordinator" model="ir.model.access">
+            <field name="name">crm.ai.config.access.coordinator</field>
+            <field name="model_id" ref="model_crm_ai_config"/>
+            <field name="group_id" ref="group_crm_coordinator"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+        </record>
+
+        <!-- Permisos para el Coordinador CRM en Piezas de Conocimiento -->
+        <record id="access_crm_prompt_coordinator" model="ir.model.access">
+            <field name="name">crm.prompt.access.coordinator</field>
+            <field name="model_id" ref="model_crm_prompt"/>
+            <field name="group_id" ref="group_crm_coordinator"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">1</field>
+            <field name="perm_unlink">1</field>
+        </record>
+
+        <!-- Permisos para el Coordinador CRM en Etapas (crm.stage) -->
+        <record id="access_crm_stage_coordinator" model="ir.model.access">
+            <field name="name">crm.stage.access.coordinator</field>
+            <field name="model_id" ref="crm.model_crm_stage"/>
+            <field name="group_id" ref="group_crm_coordinator"/>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">0</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,40 @@
+.cabecera_card{
+    //background-color:yellow;
+    display: flex;
+
+    .contenedor_icono_canal_18{
+        flex: 1 0 0;
+        display: flex;
+        align-items: start;
+
+        .o_readonly{
+            display: flex;
+
+            img{
+                filter: drop-shadow(0.5px 1px 0.5px rgba(0, 0, 0, 0.5));
+            }
+        }
+    }
+
+    .f_name{
+        flex: 6 0 0;
+        display: flex;
+        align-items: start;
+    }
+
+    .texto_fecha_horas_tarjeta{
+        flex: 3 0 0;
+    }
+}
+
+.texto_fecha_horas_tarjeta{
+    font-size: 12px;
+    line-height: 1;
+    text-align: end;
+}
+
+.contenedor_autor > div.cuadro_usuario{
+    height: 1.7145em;
+    aspect-ratio: 1;
+    border-radius:0.25rem;
+}

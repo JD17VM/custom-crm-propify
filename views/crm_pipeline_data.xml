@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- 1. DEFINICIÓN DEL EMBUDO DE COMPRADORES -->
+        <record id="crm_team_propify_custom" model="crm.team">
+            <field name="name">Propietarios</field> <!-- CAMBIADO: Antes Compradores -->
+            <field name="sequence">20</field>
+            <field name="use_leads">True</field>
+            <field name="use_opportunities">True</field>
+            <field name="member_ids" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- 2. DEFINICIÓN DEL EMBUDO DE PROPIETARIOS (NUEVO Y LIMPIO) -->
+        <record id="crm_team_propify_owners" model="crm.team">
+            <field name="name">Compradores</field> <!-- CAMBIADO: Antes Propietarios -->
+            <field name="sequence">10</field>
+            <field name="use_leads">True</field>
+            <field name="use_opportunities">True</field>
+            <field name="member_ids" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="stage_propify_owners_1" model="crm.stage">
+            <field name="name">Interesado en compra</field>
+            <field name="sequence">10</field>
+            <field name="team_ids" eval="[(6, 0, [ref('crm_team_propify_owners')])]"/>
+            <field name="instrucciones_ia">El cliente ha mostrado interés inicial.</field>
+        </record>
+
+        <record id="stage_propify_owners_2" model="crm.stage">
+            <field name="name">Contactado/Activo</field>
+            <field name="sequence">20</field>
+            <field name="team_ids" eval="[(6, 0, [ref('crm_team_propify_owners')])]"/>
+            <field name="instrucciones_ia">Se ha establecido contacto y el cliente responde.</field>
+        </record>
+
+        <record id="stage_propify_owners_3" model="crm.stage">
+            <field name="name">Requerimiento definido</field>
+            <field name="sequence">30</field>
+            <field name="team_ids" eval="[(6, 0, [ref('crm_team_propify_owners')])]"/>
+            <field name="instrucciones_ia">Se tienen claros los requisitos de compra.</field>
+        </record>
+
+        <record id="stage_propify_owners_4" model="crm.stage">
+            <field name="name">En visitas</field>
+            <field name="sequence">40</field>
+            <field name="team_ids" eval="[(6, 0, [ref('crm_team_propify_owners')])]"/>
+            <field name="instrucciones_ia">El cliente está visitando propiedades.</field>
+        </record>
+
+        <record id="stage_propify_owners_5" model="crm.stage">
+            <field name="name">Propuesta/Negociación</field>
+            <field name="sequence">50</field>
+            <field name="team_ids" eval="[(6, 0, [ref('crm_team_propify_owners')])]"/>
+            <field name="instrucciones_ia">Se está negociando una oferta.</field>
+        </record>
+
+        <record id="stage_propify_owners_6" model="crm.stage">
+            <field name="name">Propuesta aceptada/Documentos</field>
+            <field name="sequence">60</field>
+            <field name="team_ids" eval="[(6, 0, [ref('crm_team_propify_owners')])]"/>
+            <field name="instrucciones_ia">Oferta aceptada, en trámite documentario.</field>
+        </record>
+
+        <record id="stage_propify_owners_7" model="crm.stage">
+            <field name="name">Compra realizada</field>
+            <field name="sequence">70</field>
+            <field name="team_ids" eval="[(6, 0, [ref('crm_team_propify_owners')])]"/>
+            <field name="instrucciones_ia">Operación cerrada exitosamente.</field>
+        </record>
+
+        <record id="stage_propify_owners_8" model="crm.stage">
+            <field name="name">Seguimiento activo</field>
+            <field name="sequence">80</field>
+            <field name="team_ids" eval="[(6, 0, [ref('crm_team_propify_owners')])]"/>
+            <field name="instrucciones_ia">Post-venta o seguimiento a largo plazo.</field>
+        </record>
+    </data>
+</odoo>
